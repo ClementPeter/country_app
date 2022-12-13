@@ -17,7 +17,7 @@ class _AllCountriesState extends State<AllCountries> {
   Future<List?> getCountries() async {
     try {
       var response = await Dio().get('https://restcountries.com/v2/all');
-      print(response);
+      // print(response);
       return response.data;
     } catch (e) {
       print(":::::::::::::$e");
@@ -31,41 +31,77 @@ class _AllCountriesState extends State<AllCountries> {
     super.initState();
   }
 
+  //Toggles the TextField
+  bool isShowSearch = false;
+
   @override
   Widget build(BuildContext context) {
+    // print(countries["name"])
+    // print(countries["latlng"]) //List
+    //     print(countries["flags"]) //MAP
+    //        print(countries["languages"][0]) //List
     return Scaffold(
       appBar: AppBar(
-        title: const Text("All Countries"),
-      ),
+          title: isShowSearch
+              ? TextField(
+                  decoration: const InputDecoration(
+                    hintText: "Search",
+                  ),
+                )
+              : const Text("All Countries"),
+          actions: [
+            //search button
+            IconButton(
+              onPressed: () {
+                setState(() {
+                  isShowSearch = !isShowSearch;
+                });
+              },
+              icon: const Icon(Icons.search),
+            ),
+          ]),
       body: Container(
-          child: FutureBuilder(
-        future: countries,
-        builder: (context, snapshot) {
-          if (snapshot.hasData) {
-            final data = snapshot.data;
-            return ListView.builder(
-              // itemCount: countries.length,
-              itemBuilder: (BuildContext context, int index) {
-                return InkWell(
-                  onTap: () {},
-                  child: Padding(
-                    padding: const EdgeInsets.symmetric(horizontal: 10.0),
+          child: Padding(
+        padding: const EdgeInsets.all(8.0),
+        child: FutureBuilder(
+          future: countries,
+          builder: (context, snapshot) {
+            if (snapshot.hasData) {
+              final data = snapshot.data;
+              return ListView.builder(
+                // itemCount: countries.length,
+                itemBuilder: (BuildContext context, int index) {
+                  return InkWell(
+                    onTap: () {
+                      Navigator.push(
+                        context,
+                        MaterialPageRoute(
+                          builder: (context) {
+                            return Country(
+                              country: data[index],
+                            );
+                          },
+                        ),
+                      );
+                    },
                     child: Card(
                       child: Padding(
-                        padding: EdgeInsets.all(10.0),
-                        child: Text(data![index]['name'].toString()),
+                        padding: const EdgeInsets.all(10.0),
+                        child: Text(
+                          data![index]['name'].toString(),
+                        ),
                       ),
                     ),
-                  ),
-                );
-              },
-            );
-          } else {
-            return Center(
-              child: CircularProgressIndicator(),
-            );
-          }
-        },
+                  );
+                },
+              );
+            } else {
+              return Center(
+                child: CircularProgressIndicator(),
+              );
+            }
+          },
+        ),
       )),
     );
   }
