@@ -1,5 +1,6 @@
-import 'package:country/screens/allCountries.dart';
 import 'package:flutter/material.dart';
+import 'package:country/screens/allCountries.dart';
+
 
 void main() {
   runApp(const MyApp());
@@ -12,7 +13,7 @@ class MyApp extends StatelessWidget {
   Widget build(BuildContext context) {
     return MaterialApp(
       debugShowCheckedModeBanner: false,
-      title: 'Flutter Demo',
+      title: 'Country',
       theme: ThemeData(
         primarySwatch: Colors.blue,
         // appBarTheme: AppBarTheme(
