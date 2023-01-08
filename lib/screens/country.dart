@@ -2,15 +2,17 @@ import 'package:country/screens/countryMap.dart';
 import 'package:flip_card/flip_card.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
+import 'package:intl/intl.dart';
 
 class Country extends StatelessWidget {
+  //routing
+  static const routeName = "/country";
   const Country({super.key, this.country});
 
   final Map? country;
 
   @override
   Widget build(BuildContext context) {
-    print(country!["flags"]["svg"]);
     return Scaffold(
       appBar: AppBar(
         title: Text(country!["name"]!),
@@ -25,8 +27,7 @@ class Country extends StatelessWidget {
             // ),
             //Aloes the grid view to resize its cross axis count based on the window
             gridDelegate: SliverGridDelegateWithMaxCrossAxisExtent(
-              maxCrossAxisExtent: 200
-            ),
+                maxCrossAxisExtent: 200),
             children: [
               FlipCard(
                 front: const CountryCard(
@@ -43,21 +44,12 @@ class Country extends StatelessWidget {
                 back: Card(
                   child: Center(
                     child: SvgPicture.network(
-                      country!["flags"]["svg"],
-                      //  country!["flags"]["svg"] ?? country!["flag"],
-                      //country!["flags"]["svg"] ?? CircularProgressIndicator(),
-                      //country!["flag"]["svg"] ?? country!["flag"],
+                      country!["flags"]["svg"] ??
+                          country!["flag"] ??
+                          Text("Not found"),
                       width: 200,
                       height: 200,
                     ),
-
-                    //  SvgPicture.network(
-                    //   country!["flags"]["svg"] ??
-                    //       country!["flag"]["svg"] ??                    //       country!["flag"],
-                    //country!["flags"]["svg"] ?? CircularProgressIndicator(),
-                    //country!["flag"]["svg"] ?? country!["flag"],
-                    // width: 200,
-                    // height: 200,
                   ),
                 ),
               ),
@@ -66,7 +58,7 @@ class Country extends StatelessWidget {
                   title: "Population",
                 ),
                 back: CountryDetails(
-                  title: country!["population"]
+                  title: addCommas(country!["population"])
                       .toString(), //Add comma in between the numbers
                 ),
               ),
@@ -98,6 +90,16 @@ class Country extends StatelessWidget {
       ),
     );
   }
+}
+
+//Snippet of CHATGPPT answer
+String addCommas(num number) {
+  final parts = number.toString().split('.');
+  final intPart = parts[0];
+  final decPart = parts.length > 1 ? parts[1] : null;
+  return intPart.replaceAllMapped(
+          RegExp(r'(\d{3})(?=\d)'), (match) => '${match[0]},') +
+      (decPart != null ? '.$decPart' : '');
 }
 
 class CountryCard extends StatelessWidget {

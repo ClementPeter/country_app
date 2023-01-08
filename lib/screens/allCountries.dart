@@ -4,6 +4,8 @@ import 'package:dio/dio.dart';
 
 //Home page class - For searching based Apps we tend to use List to decode/brkdwn our jsonData to the entire App
 class AllCountries extends StatefulWidget {
+  //routing
+  static const routeName = "/allCountry";
   const AllCountries({super.key});
 
   @override
@@ -92,7 +94,6 @@ class _AllCountriesState extends State<AllCountries> {
                       ),
                     ),
                   ),
-     
                 )
               : const Text("All Countries"),
           centerTitle: true,
@@ -130,6 +131,10 @@ class _AllCountriesState extends State<AllCountries> {
                               },
                             ),
                           );
+
+                          //Passing data using named Routre and argument parameter
+                          //Navigator.pushNamed(context, Country.routeName,arguments: countries );
+                         // Navigator.of(context).pushNamed(Country.routeName,arguments: countries[index]);
                         },
                         child: Card(
                           child: Padding(

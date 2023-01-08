@@ -1,6 +1,7 @@
+import 'package:country/screens/country.dart';
+import 'package:country/screens/countryMap.dart';
 import 'package:flutter/material.dart';
 import 'package:country/screens/allCountries.dart';
-
 
 void main() {
   runApp(const MyApp());
@@ -21,6 +22,11 @@ class MyApp extends StatelessWidget {
         // ),
       ),
       home: const AllCountries(),
+      //Routing not used
+      // routes: {
+      //   Country.routeName: (context) => Country(),
+      //   CountryMap.routeName: ((context) => CountryMap()),
+      // },
     );
   }
 }
